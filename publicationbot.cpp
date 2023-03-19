@@ -12,6 +12,7 @@ PublicationBot::PublicationBot()
     });
     bot->getEvents().onCommand("news", [&](Message::Ptr message) {
         //        ID = message->chat->id;
+//        bot->getApi().sendMessage(message->chat->id, "<a href=\"http://www.example.com/\">inline URL</a>", 0, false, nullptr, "HTML");
         sendSplittedPost(message->chat->id, dailyNews);
     });
 //    bot->getEvents().onCommand("html", [&](Message::Ptr message) {
@@ -32,14 +33,14 @@ void PublicationBot::sendSplittedPost(std::int64_t ID, const std::vector<std::st
 {
     for(auto &p : post){
         std::cout << "field = " << p << std::endl;
-        bot->getApi().sendMessage(ID, p);
+        bot->getApi().sendMessage(ID, p, true, false, nullptr, "HTML");
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 
 void PublicationBot::setDailyNewsPost(std::vector<std::string> dailyNews)
 {
-    this->dailyNews = dailyNews;
+    this->dailyNews = std::move(dailyNews);
 }
 
 void PublicationBot::run() const

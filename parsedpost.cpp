@@ -5,14 +5,23 @@ Post::Post()
 
 }
 
-const std::string &Post::generatePost()
-{
-    postText += boldMark + title + boldMark + "\n";
-    for(auto &i : paragraphs)
+std::vector<std::string> Post::generatePost()
+{  
+    std::string text = startBoldMark + title + endBoldMark + "\n";
+    int totalLength = text.size();
+    for(int i=0;i<paragraphs.size();i++)
     {
-        postText+= i + "\n";
+        const int size = paragraphs.at(i).size();
+        if(totalLength+size < maxLength){
+            text+=paragraphs.at(i);
+            totalLength+=size;
+        }else{
+            splittedPostText.push_back(text);
+            text = "";
+            totalLength = 0;
+        }
     }
-    return postText;
+    return splittedPostText;
 }
 
 auto Post::generateSplitPost()  -> decltype(splittedPostText)
