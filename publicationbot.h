@@ -15,21 +15,15 @@ class PublicationBot
 public:
     PublicationBot();
     void sendPost(const std::string &post);
-    template <typename T>
-    void sendSplittedPost(const T &post);
+    void sendSplittedPost(std::int64_t ID, const std::vector<std::string> &post) const;
+    void setDailyNewsPost(std::vector<std::string> dailyNews);
+    void run() const;
 private:
     TgBot::Bot *bot;
-    std::int64_t ID = 393913297;
+//    std::int64_t ID = 393913297;
+    std::vector<std::string> dailyNews;
 };
 
-template <typename T>
-void PublicationBot::sendSplittedPost(const T &post)
-{
-    for(auto &p : post){
-        std::cout << "field = " << p << std::endl;
-        bot->getApi().sendMessage(ID, p);
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    }
-}
+
 
 #endif // PUBLICATIONBOT_H

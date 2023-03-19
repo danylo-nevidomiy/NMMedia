@@ -27,6 +27,7 @@ private:
     Downloader *downloader;
     PublicationBot *bot;
     std::string AllText;
+    Post todayNews;
 private slots:
     void readFile();
 signals:

@@ -10,7 +10,7 @@ class Post
 
 private:
     std::string postText;
-    std::vector<std::string> splittedPostText;
+
     constexpr static char boldMark[] = "**";
     constexpr static auto maxLength = 4096;
 public:
@@ -18,6 +18,7 @@ public:
     std::string title;
     std::vector<std::string> subtitles;
     std::vector<std::string> paragraphs;
+    std::vector<std::string> splittedPostText;
     std::string date;
     const std::string &generatePost();
     auto generateSplitPost() -> decltype(splittedPostText);

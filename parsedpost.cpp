@@ -17,15 +17,19 @@ const std::string &Post::generatePost()
 
 auto Post::generateSplitPost()  -> decltype(splittedPostText)
 {
+    constexpr char delim[] = " ";
     generatePost();
     if(postText.length() < maxLength){
         splittedPostText.push_back(postText);
     }else{
-        int from = 0, to = 0;
+        int from = 0, to = 0, cur = 0;
         while(postText.length()-from>maxLength){
-            to += maxLength;
+            to = from;
+            while((cur = postText.find(delim, to + 1)) < maxLength){
+                to = cur;
+            }
             splittedPostText.push_back(postText.substr(from, to));
-            from += maxLength;
+            from = to;
         }
         splittedPostText.push_back(postText.substr(from, postText.length()));
     }
