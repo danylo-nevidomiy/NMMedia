@@ -44,3 +44,8 @@ auto Post::generateSplitPost()  -> decltype(splittedPostText)
     }
     return splittedPostText;
 }
+
+void Post::pushContentItem(const std::string &line, const std::string &type)
+{
+
+}

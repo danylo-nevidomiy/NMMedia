@@ -28,6 +28,8 @@ private:
     PublicationBot *bot;
     std::string AllText;
     Post todayNews;
+    static const std::string getNextOpenTag(const std::string& str, size_t startPosition);
+    static bool isContain(const std::string &str, char c);
 private slots:
     void readFile();
 signals:
