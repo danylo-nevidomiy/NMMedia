@@ -15,21 +15,22 @@ public:
     std::vector<std::string> paragraphs;
     std::vector<std::string> splittedPostText;
     std::string date;
+    constexpr static char plainTextTag[] = "<p>";
+    constexpr static char quoteTag[] = "<blockquote>";
     std::vector<std::string> generatePost();
-    auto generateSplitPost() -> decltype(splittedPostText);
-    void pushContentItem(std::string line, contentType type);
+    void pushContentItem(const std::string &line, contentType type);
     void pushContentItem(const std::string &line, const std::string &type);
 private:
     std::string postText;
-    struct postContent{
-        std::string line;
-        contentType type;
-    };
-    std::vector<postContent> content;
-    constexpr static char startBoldMark[] = "<b><u>";
-    constexpr static char endBoldMark[] = "</u></b>";
+    std::vector<std::pair<std::string, contentType>> content;
+    constexpr static char startBIMark[] = "<b><u>";
+    constexpr static char endBIMark[] = "</u></b>";
+    constexpr static char startItalMark[] = "<i>";
+    constexpr static char endItalMark[] = "</i>";
+    constexpr static char startUnderMark[] = "<u>";
+    constexpr static char endUnderMark[] = "</u>";
     constexpr static auto maxLength = 4096;
-    constexpr static char plainText[] = "<p>";
+
 };
 
 #endif // PARSEDPOST_H

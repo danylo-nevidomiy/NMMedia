@@ -7,18 +7,11 @@ PublicationBot::PublicationBot()
 
     bot = new Bot(token);
     bot->getEvents().onCommand("start", [&](Message::Ptr message) {
-        //        ID = message->chat->id;
         bot->getApi().sendMessage(message->chat->id, "Hi!");
     });
     bot->getEvents().onCommand("news", [&](Message::Ptr message) {
-        //        ID = message->chat->id;
-//        bot->getApi().sendMessage(message->chat->id, "<a href=\"http://www.example.com/\">inline URL</a>", 0, false, nullptr, "HTML");
         sendSplittedPost(message->chat->id, dailyNews);
     });
-//    bot->getEvents().onCommand("html", [&](Message::Ptr message) {
-//        //        ID = message->chat->id;
-//        bot->getApi().sendMessage(message->chat->id, "text", 0, false, nullptr, "<h1 id=\"саудовская-аравия-дерзит\">Саудовская Аравия дерзит</h1>");
-//    });
     bot->getApi().deleteWebhook();
 
 }

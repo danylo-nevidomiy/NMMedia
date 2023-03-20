@@ -7,45 +7,37 @@ Post::Post()
 
 std::vector<std::string> Post::generatePost()
 {  
-    std::string text = startBoldMark + title + endBoldMark + "\n";
-    int totalLength = text.size();
-    for(int i=0;i<paragraphs.size();i++)
-    {
-        const int size = paragraphs.at(i).size();
-        if(totalLength+size < maxLength){
-            text+=paragraphs.at(i);
-            totalLength+=size;
+    int i=0;
+    std::string message = startBIMark + content.at(i++).first + endBIMark + "\n";
+    message += startUnderMark + content.at(i++).first + endUnderMark + "\n";
+    for(;i<content.size();i++){
+        if(content.at(i).second == SUBTITLE){
+            splittedPostText.push_back(message);
+            message = startUnderMark + content.at(i).first + endUnderMark + "\n";
+        }else if(content.at(i).second == QUOTE){
+            message+="\n";
+            message+= startItalMark + content.at(i).first + endItalMark + "\n";
+            message+="\n";
         }else{
-            splittedPostText.push_back(text);
-            text = "";
-            totalLength = 0;
+            message += content.at(i).first + "\n";
         }
     }
+    splittedPostText.push_back(message);
     return splittedPostText;
 }
 
-auto Post::generateSplitPost()  -> decltype(splittedPostText)
+void Post::pushContentItem(const std::string &line, contentType type)
 {
-    constexpr char delim[] = " ";
-    generatePost();
-    if(postText.length() < maxLength){
-        splittedPostText.push_back(postText);
-    }else{
-        int from = 0, to = 0, cur = 0;
-        while(postText.length()-from>maxLength){
-            to = from;
-            while((cur = postText.find(delim, to + 1)) < maxLength){
-                to = cur;
-            }
-            splittedPostText.push_back(postText.substr(from, to));
-            from = to;
-        }
-        splittedPostText.push_back(postText.substr(from, postText.length()));
-    }
-    return splittedPostText;
+    content.push_back(std::make_pair(line, type));
 }
 
 void Post::pushContentItem(const std::string &line, const std::string &type)
 {
-
+    if(type == plainTextTag){
+        content.push_back(std::make_pair(line, TEXT));
+    }else if(type == quoteTag){
+        content.push_back(std::make_pair(line, QUOTE));
+    }else{
+        content.push_back(std::make_pair(line, SUBTITLE));
+    }
 }

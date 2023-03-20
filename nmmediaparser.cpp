@@ -48,68 +48,45 @@ void NMMediaParser::readFile()
 {
     QFile file(downloader->getFileout());
     if (!file.open(QIODevice::ReadOnly))
-            return;
+        return;
     QTextStream in(&file);
     while (!in.atEnd()) {
-            QString line = in.readLine();
-            AllText += line.toStdString() + "\n";
-        }
+        QString line = in.readLine();
+        AllText += line.toStdString() + "\n";
+    }
 
     CDocument doc;
     doc.parse(AllText.c_str());
     CNode c = doc.find("div.paper__title").nodeAt(0);
     std::string title = AllText.substr(c.startPos(), c.endPos() - c.startPos());
     todayNews.pushContentItem(title, Post::TITLE);
-
-    std::string subtitle;
-    for(auto i=0;i<3;i++){
-        c = doc.find("div.paper__content h1").nodeAt(i);
-        subtitle = AllText.substr(c.startPos(), c.endPos() - c.startPos());
-        std::cout << "opentag = " << getNextOpenTag(AllText, c.endPos()) << std::endl;
-        std::cout << "start = " << c.startPos() << "\tend = " << c.endPos() << std::endl;
-        todayNews.subtitles.push_back(subtitle);
-        for(int j=0;j<c.childNum();j++){
-            std::cout << "child " << j << " = " << AllText.substr(c.nextSibling().startPos(), c.nextSibling().endPos() - c.nextSibling().startPos()) << std::endl;
-        }
-        std::cout << subtitle << std::endl;
-    }
     std::string text;
-    auto i = 0;
-    auto txt = doc.find("p").nodeAt(i++);
-    while(txt.valid()){
-//    std::cout << txt.valid() << std::endl;
-//        todayNews.paragraphs.push_back(txt.text());
-
-//    std::cout << "txt.text = " << txt.text() << std::endl;
-//    if(txt.childAt(0).valid()){
-//        std::cout << "child = " << txt.childAt(0).text() << std::endl;
-//    }
-//    if(txt.childAt(1).valid()){
-//        std::cout << "child = " << txt.childAt(1).text() << std::endl;
-//    }
-//    if(txt.childAt(2).valid()){
-//        std::cout << "child = " << txt.childAt(2).text() << std::endl;
-//    }
-
-//    std::cout << "ownText = " << txt.ownText() << std::endl;
-//    std::cout << txt.startPos() << std::endl;
-//    std::cout << txt.endPos() << std::endl;
-    text = AllText.substr(txt.startPos(), txt.endPos() - txt.startPos());
-    std::cout << "opentag = " << getNextOpenTag(AllText, txt.endPos()) << std::endl;
-    std::cout << "text = " << text << std::endl;
-    todayNews.paragraphs.push_back(text);
-    txt = doc.find("p").nodeAt(i++);
-
-
+    int linesCounter = 0;
+    int subtitlesCounter = 0;
+    auto lines = doc.find("p");
+    auto subtitles = doc.find("div.paper__content h1");
+    CNode subT = subtitles.nodeAt(subtitlesCounter++);
+    CNode curLine = lines.nodeAt(linesCounter++);
+    std::string nextReadType = subTitleTag;
+    while(curLine.valid()){
+        if(nextReadType.substr(0, 3) == subTitleTag){
+            text = AllText.substr(subT.startPos(), subT.endPos() - subT.startPos());
+            todayNews.pushContentItem(text, Post::SUBTITLE);
+            nextReadType = getNextOpenTag(AllText, subT.endPos());
+            subT = subtitles.nodeAt(subtitlesCounter++);
+        }else{
+            text = AllText.substr(curLine.startPos(), curLine.endPos() - curLine.startPos());
+            todayNews.pushContentItem(text, nextReadType);
+            nextReadType = getNextOpenTag(AllText, curLine.endPos());
+            curLine = lines.nodeAt(linesCounter++);
+        }
     }
     AllText = "";
-//    bot->sendSplittedPost(todayNews.generateSplitPost());
-//    bot->sendPost(p.generatePost());
     bot->setDailyNewsPost(todayNews.generatePost());
     bot->run();
 
-//    c = doc.find("div.paper__date").nodeAt(0);
-//    std::string date = AllText.substr(c.startPos(), c.endPos() - c.startPos());
-//    std::cout << date << std::endl;
+    //    c = doc.find("div.paper__date").nodeAt(0);
+    //    std::string date = AllText.substr(c.startPos(), c.endPos() - c.startPos());
+    //    std::cout << date << std::endl;
 }
 

@@ -30,6 +30,9 @@ private:
     Post todayNews;
     static const std::string getNextOpenTag(const std::string& str, size_t startPosition);
     static bool isContain(const std::string &str, char c);
+    constexpr static char plainTextTag[] = "<p>";
+    constexpr static char quoteTag[] = "<blockquote>";
+    constexpr static char subTitleTag[] = "<h1";
 private slots:
     void readFile();
 signals:
