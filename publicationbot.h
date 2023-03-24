@@ -13,7 +13,7 @@ using namespace TgBot;
 class PublicationBot
 {
 public:
-    PublicationBot();
+    PublicationBot(const std::string token);
     void publishNews();
     void publishNews(std::vector<std::string> splittedPost);
     template <typename T>

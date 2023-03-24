@@ -2,7 +2,9 @@
 #define MEDIAMANAGER_H
 
 //#include <utility>
-#include "QObject"
+#include <QObject>
+#include <QTimer>
+#include <QSettings>
 #include "nmmediaparser.h"
 #include "parsedpost.h"
 #include "publicationbot.h"
@@ -15,20 +17,24 @@ private:
     NMMediaParser* parser;
     Downloader *downloader;
     PublicationBot *bot;
+    QTimer *timer;
     Post actualPost;
-    static constexpr char address[] = "https://снми.рф/";
-    static constexpr char number_html[] = "number.html";
-    static constexpr char news_html[] = "news.html";
-    std::string actualURL;
+    QString address;
+    QString number_html;
+    QString news_html;
+    QSettings *settings;
+    std::string actualURL = "";
     void getNewURL() const;
     std::string parseNewURL() const;
     Post parseDailyNews() const;
 public:
     MediaManager();
-    void exec();
+    ~MediaManager();
+//    void exec();
 public slots:
 //    void processData();
     void processData(QString filename);
+    void exec();
 signals:
     void load();
 };

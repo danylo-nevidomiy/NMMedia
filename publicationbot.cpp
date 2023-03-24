@@ -1,8 +1,7 @@
 #include "publicationbot.h"
 
-PublicationBot::PublicationBot()
+PublicationBot::PublicationBot(const std::string token)
 {
-    std::string token("TOKEN");
 
     bot = new Bot(token);
     bot->getEvents().onCommand("start", [&](Message::Ptr message) {
