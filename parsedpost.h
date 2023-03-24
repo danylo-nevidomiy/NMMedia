@@ -8,20 +8,17 @@
 class Post
 {
 public:
-    enum contentType{TITLE, SUBTITLE, TEXT, QUOTE, DATE};
+    enum contentType{TITLE, SUBTITLE, TEXT, QUOTE, LIST, DATE};
     Post();
-    std::string title;
-    std::vector<std::string> subtitles;
-    std::vector<std::string> paragraphs;
     std::vector<std::string> splittedPostText;
-    std::string date;
+//    std::string date;
     constexpr static char plainTextTag[] = "<p>";
     constexpr static char quoteTag[] = "<blockquote>";
+    constexpr static char orderedListTag[] = "<ol>";
     std::vector<std::string> generatePost();
     void pushContentItem(const std::string &line, contentType type);
     void pushContentItem(const std::string &line, const std::string &type);
 private:
-    std::string postText;
     std::vector<std::pair<std::string, contentType>> content;
     constexpr static char startBIMark[] = "<b><u>";
     constexpr static char endBIMark[] = "</u></b>";

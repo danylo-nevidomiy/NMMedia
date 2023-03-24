@@ -7,7 +7,7 @@ Post::Post()
 
 std::vector<std::string> Post::generatePost()
 {  
-    int i=0;
+    long unsigned int i=0;
     std::string message = startBIMark + content.at(i++).first + endBIMark + "\n";
     message += startUnderMark + content.at(i++).first + endUnderMark + "\n";
     for(;i<content.size();i++){
@@ -37,6 +37,8 @@ void Post::pushContentItem(const std::string &line, const std::string &type)
         content.push_back(std::make_pair(line, TEXT));
     }else if(type == quoteTag){
         content.push_back(std::make_pair(line, QUOTE));
+    }else if(type == orderedListTag){
+        content.push_back(std::make_pair(line, LIST));
     }else{
         content.push_back(std::make_pair(line, SUBTITLE));
     }

@@ -2,17 +2,17 @@
 
 NMMediaParser::NMMediaParser(QObject *parent)
 {
-//    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
-//    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
+    //    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
+    //    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
 }
 
 NMMediaParser::NMMediaParser(const QString &url, const QString &filename, QObject *parent) : QObject(parent)
 {
-//    downloader = new Downloader(url, filename);
-//    bot = new PublicationBot();
-//    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
-//    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
-//    emit load();
+    //    downloader = new Downloader(url, filename);
+    //    bot = new PublicationBot();
+    //    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
+    //    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
+    //    emit load();
 }
 
 NMMediaParser::~NMMediaParser()
@@ -69,17 +69,28 @@ Post NMMediaParser::readNewspaper(const std::string &filename)
     std::string text;
     int linesCounter = 0;
     int subtitlesCounter = 0;
+    int listElemsCounter = 0;
     auto lines = doc.find("p");
     auto subtitles = doc.find("div.paper__content h1");
-    CNode subT = subtitles.nodeAt(subtitlesCounter++);
+    auto lists = doc.find("li");
+    CNode curSubT = subtitles.nodeAt(subtitlesCounter++);
     CNode curLine = lines.nodeAt(linesCounter++);
+    CNode curListEl = lists.nodeAt(++listElemsCounter);
     std::string nextReadType = subTitleTag;
     while(curLine.valid()){
         if(nextReadType.substr(0, 3) == subTitleTag){
-            text = AllText.substr(subT.startPos(), subT.endPos() - subT.startPos());
+            text = AllText.substr(curSubT.startPos(), curSubT.endPos() - curSubT.startPos());
             todayNews.pushContentItem(text, Post::SUBTITLE);
-            nextReadType = getNextOpenTag(AllText, subT.endPos());
-            subT = subtitles.nodeAt(subtitlesCounter++);
+            nextReadType = getNextOpenTag(AllText, curSubT.endPos());
+            curSubT = subtitles.nodeAt(subtitlesCounter++);
+        }else if(nextReadType == orderedListTag){
+            do{
+                text = AllText.substr(curListEl.startPos(), curListEl.endPos() - curListEl.startPos());
+                todayNews.pushContentItem(std::to_string(listElemsCounter) + ". " + text, Post::LIST);
+                auto endPos = curListEl.endPos();
+                curListEl = lists.nodeAt(++listElemsCounter);
+                nextReadType = getNextOpenTag(AllText, endPos);
+            }while(nextReadType == orderedListElemTag);
         }else{
             text = AllText.substr(curLine.startPos(), curLine.endPos() - curLine.startPos());
             todayNews.pushContentItem(text, nextReadType);
@@ -87,8 +98,6 @@ Post NMMediaParser::readNewspaper(const std::string &filename)
             curLine = lines.nodeAt(linesCounter++);
         }
     }
-//    bot->setDailyNewsPost(todayNews.generatePost());
-//    bot->publishNews();
     return todayNews;
 }
 
@@ -115,6 +124,6 @@ std::string NMMediaParser::getLastNumber(const std::string &filename)
         }
         return number;
     }
-return std::string();
+    return std::string();
 }
 

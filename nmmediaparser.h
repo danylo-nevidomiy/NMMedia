@@ -35,6 +35,8 @@ private:
     constexpr static char plainTextTag[] = "<p>";
     constexpr static char quoteTag[] = "<blockquote>";
     constexpr static char subTitleTag[] = "<h1";
+    constexpr static char orderedListTag[] = "<ol>";
+    constexpr static char orderedListElemTag[] = "<li>";
     constexpr static char basic_url[] = "https://xn--h1ahcp.xn--p1ai/";
     constexpr static int basic_url_length = 28;
 
