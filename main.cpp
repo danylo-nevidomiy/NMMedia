@@ -8,12 +8,15 @@
 
 #include "nmmediaparser.h"
 #include "publicationbot.h"
+#include "mediamanager.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     qDebug() << "Running...";
-    NMMediaParser parser("https://снми.рф/253/", "./res.html");
+    MediaManager MM;
+    MM.exec();
+//    NMMediaParser parser("https://снми.рф/253/", "./res.html");
 //    PublicationBot bot;
 //    bot.sendPost("run");
     return a.exec();

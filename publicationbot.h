@@ -14,8 +14,10 @@ class PublicationBot
 {
 public:
     PublicationBot();
-    void sendPost(const std::string &post);
-    void sendSplittedPost(std::int64_t ID, const std::vector<std::string> &post) const;
+    void publishNews();
+    void publishNews(std::vector<std::string> splittedPost);
+    template <typename T>
+    void sendSplittedPost(T ID, const std::vector<std::string> &post) const;
     void setDailyNewsPost(std::vector<std::string> dailyNews);
     void run() const;
 private:

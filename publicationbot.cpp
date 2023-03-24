@@ -3,7 +3,6 @@
 PublicationBot::PublicationBot()
 {
     std::string token("TOKEN");
-    printf("Token: %s\n", token.c_str());
 
     bot = new Bot(token);
     bot->getEvents().onCommand("start", [&](Message::Ptr message) {
@@ -16,13 +15,18 @@ PublicationBot::PublicationBot()
 
 }
 
-void PublicationBot::sendPost(const std::string &post)
+void PublicationBot::publishNews()
 {
-//    bot->getApi().sendMessage(ID, post);
+    sendSplittedPost<std::string>("@non_mass_media", dailyNews);
 }
 
+void PublicationBot::publishNews(std::vector<std::string> splittedPost)
+{
+    sendSplittedPost<std::string>("@non_mass_media", splittedPost);
+}
 
-void PublicationBot::sendSplittedPost(std::int64_t ID, const std::vector<std::string> &post) const
+template <typename T>
+void PublicationBot::sendSplittedPost(T ID, const std::vector<std::string> &post) const
 {
     for(auto &p : post){
         std::cout << "field = " << p << std::endl;

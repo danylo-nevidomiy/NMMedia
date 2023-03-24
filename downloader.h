@@ -13,6 +13,7 @@ class Downloader : public QObject
 {
     Q_OBJECT
 public:
+    Downloader(QObject *parent = 0);
     explicit Downloader(const QString &url, QObject *parent = 0);
     Downloader(const QString &url, const QString &filename, QObject *parent = 0);
 
@@ -21,12 +22,13 @@ public:
 
     const QString &getFileout() const;
     void setFileout(const QString &newFileout);
-
+    void loadData(const std::string &url, const std::string &outfile);
 signals:
-    void onReady();
+    void onReady(QString name);
 
 public slots:
     void getData();
+
     void onResult(QNetworkReply *reply);
 
 private:

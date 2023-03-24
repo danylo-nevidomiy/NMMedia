@@ -1,12 +1,18 @@
 #include "nmmediaparser.h"
 
+NMMediaParser::NMMediaParser(QObject *parent)
+{
+//    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
+//    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
+}
+
 NMMediaParser::NMMediaParser(const QString &url, const QString &filename, QObject *parent) : QObject(parent)
 {
-    downloader = new Downloader(url, filename);
-    bot = new PublicationBot();
-    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
-    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
-    emit load();
+//    downloader = new Downloader(url, filename);
+//    bot = new PublicationBot();
+//    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
+//    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
+//    emit load();
 }
 
 NMMediaParser::~NMMediaParser()
@@ -44,18 +50,18 @@ bool NMMediaParser::isContain(const std::string &str, char c)
     return false;
 }
 
-void NMMediaParser::readFile()
+Post NMMediaParser::readNewspaper(const std::string &filename)
 {
-    QFile file(downloader->getFileout());
+    QFile file(QString::fromStdString(filename));
     if (!file.open(QIODevice::ReadOnly))
-        return;
+        return Post();
     QTextStream in(&file);
+    Post todayNews;
+    std::string AllText;
     while (!in.atEnd()) {
         QString line = in.readLine();
         AllText += line.toStdString() + "\n";
     }
-
-    CDocument doc;
     doc.parse(AllText.c_str());
     CNode c = doc.find("div.paper__title").nodeAt(0);
     std::string title = AllText.substr(c.startPos(), c.endPos() - c.startPos());
@@ -81,12 +87,34 @@ void NMMediaParser::readFile()
             curLine = lines.nodeAt(linesCounter++);
         }
     }
-    AllText = "";
-    bot->setDailyNewsPost(todayNews.generatePost());
-    bot->run();
+//    bot->setDailyNewsPost(todayNews.generatePost());
+//    bot->publishNews();
+    return todayNews;
+}
 
-    //    c = doc.find("div.paper__date").nodeAt(0);
-    //    std::string date = AllText.substr(c.startPos(), c.endPos() - c.startPos());
-    //    std::cout << date << std::endl;
+std::string NMMediaParser::getLastNumber(const std::string &filename)
+{
+    QFile file(QString::fromStdString(filename));
+    if (file.open(QIODevice::ReadOnly)){
+        std::string htmlText = "";
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            htmlText += line.toStdString() + "\n";
+        }
+        doc.parse(htmlText);
+        CNode c = doc.find("script").nodeAt(0);
+        std::string script = c.text();
+        int index = script.find(basic_url, 0);
+        std::cout << "index = " << index << std::endl;
+        std::string number = "";
+        index+=basic_url_length;
+        while(std::isdigit(script[index])){
+            number += script[index];
+            index++;
+        }
+        return number;
+    }
+return std::string();
 }
 

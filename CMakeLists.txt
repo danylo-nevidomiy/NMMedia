@@ -44,6 +44,8 @@ set_property(TARGET gq PROPERTY
              publicationbot.cpp
              parsedpost.h
              parsedpost.cpp
+             mediamanager.h
+             mediamanager.cpp
              )
 
 
