@@ -30,9 +30,7 @@ private:
 public:
     MediaManager();
     ~MediaManager();
-//    void exec();
 public slots:
-//    void processData();
     void processData(QString filename);
     void exec();
 signals:

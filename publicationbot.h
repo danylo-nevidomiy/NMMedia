@@ -22,7 +22,6 @@ public:
     void run() const;
 private:
     TgBot::Bot *bot;
-//    std::int64_t ID = 393913297;
     std::vector<std::string> dailyNews;
 };
 

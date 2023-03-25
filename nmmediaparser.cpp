@@ -2,17 +2,12 @@
 
 NMMediaParser::NMMediaParser(QObject *parent)
 {
-    //    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
-    //    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
+
 }
 
 NMMediaParser::NMMediaParser(const QString &url, const QString &filename, QObject *parent) : QObject(parent)
 {
-    //    downloader = new Downloader(url, filename);
-    //    bot = new PublicationBot();
-    //    connect(this, &NMMediaParser::load, downloader, &Downloader::getData);
-    //    connect(downloader, &Downloader::onReady, this, &NMMediaParser::readFile);
-    //    emit load();
+
 }
 
 NMMediaParser::~NMMediaParser()
@@ -98,6 +93,19 @@ Post NMMediaParser::readNewspaper(const std::string &filename)
             curLine = lines.nodeAt(linesCounter++);
         }
     }
+    CNode d = doc.find("div.paper__date").nodeAt(0);
+    text = AllText.substr(d.startPos(), d.endPos() - d.startPos());
+    std::string date = "";
+    int i=0;
+    while(text[i]!='&'){
+        date+=text[i++];
+    }
+    while(text[i++]!=';'){}
+    date+= " ";
+    while(i<text.length()){
+        date+=text[i++];
+    }
+    todayNews.pushContentItem(date, Post::DATE);
     return todayNews;
 }
 
@@ -115,7 +123,6 @@ std::string NMMediaParser::getLastNumber(const std::string &filename)
         CNode c = doc.find("script").nodeAt(0);
         std::string script = c.text();
         int index = script.find(basic_url, 0);
-        std::cout << "index = " << index << std::endl;
         std::string number = "";
         index+=basic_url_length;
         while(std::isdigit(script[index])){

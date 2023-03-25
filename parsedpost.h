@@ -11,7 +11,6 @@ public:
     enum contentType{TITLE, SUBTITLE, TEXT, QUOTE, LIST, DATE};
     Post();
     std::vector<std::string> splittedPostText;
-//    std::string date;
     constexpr static char plainTextTag[] = "<p>";
     constexpr static char quoteTag[] = "<blockquote>";
     constexpr static char orderedListTag[] = "<ol>";

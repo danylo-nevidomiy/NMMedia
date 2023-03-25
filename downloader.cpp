@@ -14,7 +14,7 @@ Downloader::Downloader(const QString &url, QObject *parent) : QObject(parent), m
 Downloader::Downloader(const QString &url, const QString &filename, QObject *parent)
 {
     this->URL = url;
-   this->fileout = filename;
+    this->fileout = filename;
     manager = new QNetworkAccessManager();
     connect(manager, &QNetworkAccessManager::finished, this, &Downloader::onResult);
 }
@@ -35,7 +35,6 @@ void Downloader::loadData(const std::string &url, const std::string &outfile)
 
 void Downloader::onResult(QNetworkReply *reply)
 {
-    qDebug() << "onResult()";
     // If an error occurs in the process of obtaining data
     if(reply->error()){
         // We inform about it and show the error information
@@ -48,7 +47,7 @@ void Downloader::onResult(QNetworkReply *reply)
         if(file->open(QFile::WriteOnly)){
             file->write(reply->readAll());  // ... and write all the information from the page file
             file->close();                  // close file
-        emit onReady(fileout); // Sends a signal to the completion of the receipt of the file
+            emit onReady(fileout); // Sends a signal to the completion of the receipt of the file
         }
     }
 }

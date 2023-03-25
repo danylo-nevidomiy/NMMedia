@@ -45,11 +45,6 @@ void MediaManager::exec()
     timer->start();
 }
 
-//void MediaManager::processData(){
-//    qDebug() << "processData" ;
-//    QCoreApplication::quit();
-//}
-
 void MediaManager::processData(QString filename)
 {
     if(filename == number_html){

@@ -27,8 +27,6 @@ public:
     Post readNewspaper(const std::string &filename);
     std::string getLastNumber(const std::string &filename);
 private:
-//    Downloader *downloader;
-//    PublicationBot *bot;
     CDocument doc;
     static const std::string getNextOpenTag(const std::string& str, size_t startPosition);
     static bool isContain(const std::string &str, char c);

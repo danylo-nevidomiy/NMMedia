@@ -28,7 +28,6 @@ template <typename T>
 void PublicationBot::sendSplittedPost(T ID, const std::vector<std::string> &post) const
 {
     for(auto &p : post){
-        std::cout << "field = " << p << std::endl;
         bot->getApi().sendMessage(ID, p, true, false, nullptr, "HTML");
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }

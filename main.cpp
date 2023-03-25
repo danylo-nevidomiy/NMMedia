@@ -16,9 +16,6 @@ int main(int argc, char *argv[])
     qDebug() << "Running...";
     MediaManager MM;
     MM.exec();
-//    NMMediaParser parser("https://снми.рф/253/", "./res.html");
-//    PublicationBot bot;
-//    bot.sendPost("run");
     return a.exec();
     return 0;
 }
