@@ -5,6 +5,11 @@ Downloader::Downloader(QObject *parent) : QObject(parent), manager(new QNetworkA
     connect(manager, &QNetworkAccessManager::finished, this, &Downloader::onResult);
 }
 
+Downloader::~Downloader()
+{
+ delete manager;
+}
+
 Downloader::Downloader(const QString &url, QObject *parent) : QObject(parent), manager(new QNetworkAccessManager())
 {
     this->URL = url;

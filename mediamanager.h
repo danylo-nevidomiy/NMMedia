@@ -31,7 +31,7 @@ public:
     MediaManager();
     ~MediaManager();
 public slots:
-    void processData(QString filename);
+    void processData(const QString filename);
     void exec();
 signals:
     void load();

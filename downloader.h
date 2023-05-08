@@ -14,6 +14,7 @@ class Downloader : public QObject
     Q_OBJECT
 public:
     Downloader(QObject *parent = 0);
+    ~Downloader();
     explicit Downloader(const QString &url, QObject *parent = 0);
     Downloader(const QString &url, const QString &filename, QObject *parent = 0);
 

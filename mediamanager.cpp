@@ -45,7 +45,7 @@ void MediaManager::exec()
     timer->start();
 }
 
-void MediaManager::processData(QString filename)
+void MediaManager::processData(const QString filename)
 {
     if(filename == number_html){
         auto url = parseNewURL();

@@ -14,6 +14,11 @@ PublicationBot::PublicationBot(const std::string token)
 
 }
 
+PublicationBot::~PublicationBot()
+{
+    delete bot;
+}
+
 void PublicationBot::publishNews()
 {
     sendSplittedPost<std::string>("@non_mass_media", dailyNews);
